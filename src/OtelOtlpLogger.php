@@ -24,9 +24,9 @@ use Psr\Http\Message\StreamFactoryInterface;
 /**
  * @no-named-arguments
  */
-readonly class OtlpLogger extends OtelLogger
+readonly class OtelOtlpLogger extends OtelStandardErrorLogger
 {
-    protected readonly OtlpLoggerConfigInterface $config;
+    protected readonly OtelOtlpLoggerConfigInterface $config;
 
     protected readonly ClientInterface $httpClient;
 
@@ -34,7 +34,7 @@ readonly class OtlpLogger extends OtelLogger
 
     protected readonly StreamFactoryInterface $streamFactory;
 
-    public function __construct(ClockInterface $clock, StreamFactoryInterface $streamFactory, RequestFactoryInterface $requestFactory, ClientInterface $httpClient, OtlpLoggerConfigInterface $config = new OtlpLoggerConfig())
+    public function __construct(ClockInterface $clock, StreamFactoryInterface $streamFactory, RequestFactoryInterface $requestFactory, ClientInterface $httpClient, OtelOtlpLoggerConfigInterface $config = new OtelOtlpLoggerConfig())
     {
         parent::__construct($clock);
 

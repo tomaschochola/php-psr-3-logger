@@ -21,7 +21,7 @@ use Psr\Http\Message\UriInterface;
 /**
  * @no-named-arguments
  */
-readonly class OtlpLoggerConfig implements OtlpLoggerConfigInterface
+readonly class OtelOtlpLoggerConfig implements OtelOtlpLoggerConfigInterface
 {
     #[Override]
     public readonly string $method;

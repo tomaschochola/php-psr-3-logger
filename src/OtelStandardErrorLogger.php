@@ -48,7 +48,7 @@ use const STDERR;
 /**
  * @no-named-arguments
  */
-readonly class OtelLogger implements LoggerInterface
+readonly class OtelStandardErrorLogger implements LoggerInterface
 {
     use LoggerTrait;
 
