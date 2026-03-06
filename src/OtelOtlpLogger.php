@@ -17,16 +17,19 @@ namespace TomasChochola\Psr\Log;
 
 use Override;
 use Psr\Clock\ClockInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 
+use function assert;
+
 /**
  * @no-named-arguments
  */
-readonly class OtelOtlpLogger extends OtelStandardErrorLogger
+readonly class OtelOtlpLogger extends OtelStderrLogger
 {
-    protected readonly OtelOtlpLoggerConfigInterface $config;
+    protected readonly OtelOtlpLoggerSettingsInterface $config;
 
     protected readonly ClientInterface $httpClient;
 
@@ -34,7 +37,7 @@ readonly class OtelOtlpLogger extends OtelStandardErrorLogger
 
     protected readonly StreamFactoryInterface $streamFactory;
 
-    public function __construct(ClockInterface $clock, StreamFactoryInterface $streamFactory, RequestFactoryInterface $requestFactory, ClientInterface $httpClient, OtelOtlpLoggerConfigInterface $config = new OtelOtlpLoggerConfig())
+    public function __construct(ClockInterface $clock, StreamFactoryInterface $streamFactory, RequestFactoryInterface $requestFactory, ClientInterface $httpClient, OtelOtlpLoggerSettingsInterface $config = new OtelOtlpLoggerSettings())
     {
         parent::__construct($clock);
 
@@ -42,6 +45,23 @@ readonly class OtelOtlpLogger extends OtelStandardErrorLogger
         $this->requestFactory = $requestFactory;
         $this->httpClient = $httpClient;
         $this->config = $config;
+    }
+
+    public static function unload(ContainerInterface $container): self
+    {
+        $clock = $container->get(ClockInterface::class);
+        $streamFactory = $container->get(StreamFactoryInterface::class);
+        $requestFactory = $container->get(RequestFactoryInterface::class);
+        $httpClient = $container->get(ClientInterface::class);
+        $config = $container->get(OtelOtlpLoggerSettingsInterface::class);
+
+        assert($clock instanceof ClockInterface);
+        assert($streamFactory instanceof StreamFactoryInterface);
+        assert($requestFactory instanceof RequestFactoryInterface);
+        assert($httpClient instanceof ClientInterface);
+        assert($config instanceof OtelOtlpLoggerSettingsInterface);
+
+        return new self($clock, $streamFactory, $requestFactory, $httpClient, $config);
     }
 
     #[Override]

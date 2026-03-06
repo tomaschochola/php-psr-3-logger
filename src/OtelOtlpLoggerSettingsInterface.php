@@ -20,7 +20,7 @@ use Psr\Http\Message\UriInterface;
 /**
  * @no-named-arguments
  */
-interface OtelOtlpLoggerConfigInterface
+interface OtelOtlpLoggerSettingsInterface
 {
     public string $method {
         get;

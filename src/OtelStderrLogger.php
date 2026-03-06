@@ -18,6 +18,7 @@ namespace TomasChochola\Psr\Log;
 use LogicException;
 use Override;
 use Psr\Clock\ClockInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
@@ -48,7 +49,7 @@ use const STDERR;
 /**
  * @no-named-arguments
  */
-readonly class OtelStandardErrorLogger implements LoggerInterface
+readonly class OtelStderrLogger implements LoggerInterface
 {
     use LoggerTrait;
 
@@ -71,6 +72,15 @@ readonly class OtelStandardErrorLogger implements LoggerInterface
     public function __construct(ClockInterface $clock)
     {
         $this->clock = $clock;
+    }
+
+    public static function unload(ContainerInterface $container): self
+    {
+        $clock = $container->get(ClockInterface::class);
+
+        assert($clock instanceof ClockInterface);
+
+        return new self($clock);
     }
 
     #[Override]

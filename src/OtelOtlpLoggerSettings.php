@@ -16,12 +16,16 @@ declare(strict_types=1);
 namespace TomasChochola\Psr\Log;
 
 use Override;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\UriInterface;
+
+use function getenv;
+use function is_string;
 
 /**
  * @no-named-arguments
  */
-readonly class OtelOtlpLoggerConfig implements OtelOtlpLoggerConfigInterface
+readonly class OtelOtlpLoggerSettings implements OtelOtlpLoggerSettingsInterface
 {
     #[Override]
     public readonly string $method;
@@ -33,5 +37,21 @@ readonly class OtelOtlpLoggerConfig implements OtelOtlpLoggerConfigInterface
     {
         $this->uri = $uri;
         $this->method = $method;
+    }
+
+    public static function unload(ContainerInterface $container): self
+    {
+        $uri = getenv('OTLP_URI');
+        $method = getenv('OTLP_METHOD');
+
+        if (!is_string($uri) || $uri === '') {
+            $uri = 'http://localhost:4318/v1/logs';
+        }
+
+        if (!is_string($method) || $method === '') {
+            $method = 'POST';
+        }
+
+        return new self($uri, $method);
     }
 }
