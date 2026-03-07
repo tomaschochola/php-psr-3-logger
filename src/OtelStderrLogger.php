@@ -54,7 +54,7 @@ readonly class OtelStderrLogger implements LoggerInterface
     use LoggerTrait;
 
     /**
-     * @var array<int|string, int>
+     * @var array<mixed, int>
      */
     protected const array LEVELS = [
         'EMERGENCY' => 21,
@@ -116,7 +116,7 @@ readonly class OtelStderrLogger implements LoggerInterface
     }
 
     /**
-     * @return array<int|string, mixed>
+     * @return array<mixed, mixed>
      */
     protected function anyValue(mixed $value): array
     {
@@ -162,9 +162,9 @@ readonly class OtelStderrLogger implements LoggerInterface
     }
 
     /**
-     * @param array<int|string, mixed> $attributes
+     * @param array<mixed, mixed> $attributes
      *
-     * @return array<int|string, mixed>
+     * @return array<mixed, mixed>
      */
     protected function attributes(array $attributes): array
     {

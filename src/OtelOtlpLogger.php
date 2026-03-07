@@ -47,6 +47,7 @@ readonly class OtelOtlpLogger extends OtelStderrLogger
         $this->config = $config;
     }
 
+    #[Override]
     public static function unload(ContainerInterface $container): self
     {
         $clock = $container->get(ClockInterface::class);
