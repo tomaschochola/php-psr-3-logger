@@ -27,13 +27,17 @@ use function is_string;
  */
 readonly class OtelOtlpLoggerSettings implements OtelOtlpLoggerSettingsInterface
 {
+    private const string DEFAULT_METHOD = 'POST';
+
+    private const string DEFAULT_URI = 'http://localhost:4318/v1/logs';
+
     #[Override]
     public readonly string $method;
 
     #[Override]
     public readonly UriInterface|string $uri;
 
-    public function __construct(UriInterface|string $uri = 'http://localhost:4318/v1/logs', string $method = 'POST')
+    public function __construct(UriInterface|string $uri = self::DEFAULT_URI, string $method = self::DEFAULT_METHOD)
     {
         $this->uri = $uri;
         $this->method = $method;
@@ -45,11 +49,11 @@ readonly class OtelOtlpLoggerSettings implements OtelOtlpLoggerSettingsInterface
         $method = getenv('OTLP_METHOD');
 
         if (!is_string($uri) || $uri === '') {
-            $uri = 'http://localhost:4318/v1/logs';
+            $uri = self::DEFAULT_URI;
         }
 
         if (!is_string($method) || $method === '') {
-            $method = 'POST';
+            $method = self::DEFAULT_METHOD;
         }
 
         return new self($uri, $method);

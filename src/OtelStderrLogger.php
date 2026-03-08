@@ -21,7 +21,6 @@ use Psr\Clock\ClockInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerTrait;
 use Stringable;
 use UnexpectedValueException;
 
@@ -51,22 +50,6 @@ use const STDERR;
  */
 readonly class OtelStderrLogger implements LoggerInterface
 {
-    use LoggerTrait;
-
-    /**
-     * @var array<mixed, int>
-     */
-    protected const array LEVELS = [
-        'EMERGENCY' => 21,
-        'ALERT' => 20,
-        'CRITICAL' => 19,
-        'ERROR' => 17,
-        'WARNING' => 13,
-        'NOTICE' => 12,
-        'INFO' => 9,
-        'DEBUG' => 5,
-    ];
-
     protected readonly ClockInterface $clock;
 
     public function __construct(ClockInterface $clock)
@@ -84,6 +67,54 @@ readonly class OtelStderrLogger implements LoggerInterface
     }
 
     #[Override]
+    public function emergency(Stringable|string $message, array $context = []): void
+    {
+        $this->log('emergency', $message, $context);
+    }
+
+    #[Override]
+    public function alert(Stringable|string $message, array $context = []): void
+    {
+        $this->log('alert', $message, $context);
+    }
+
+    #[Override]
+    public function critical(Stringable|string $message, array $context = []): void
+    {
+        $this->log('critical', $message, $context);
+    }
+
+    #[Override]
+    public function error(Stringable|string $message, array $context = []): void
+    {
+        $this->log('error', $message, $context);
+    }
+
+    #[Override]
+    public function warning(Stringable|string $message, array $context = []): void
+    {
+        $this->log('warning', $message, $context);
+    }
+
+    #[Override]
+    public function notice(Stringable|string $message, array $context = []): void
+    {
+        $this->log('notice', $message, $context);
+    }
+
+    #[Override]
+    public function info(Stringable|string $message, array $context = []): void
+    {
+        $this->log('info', $message, $context);
+    }
+
+    #[Override]
+    public function debug(Stringable|string $message, array $context = []): void
+    {
+        $this->log('debug', $message, $context);
+    }
+
+    #[Override]
     public function log(mixed $level, Stringable|string $message, array $context = []): void
     {
         $level = $this->level($level);
@@ -97,7 +128,7 @@ readonly class OtelStderrLogger implements LoggerInterface
                         [
                             'scope' => [
                                 'name' => 'tomaschochola/php-psr-3-logger-interface',
-                                'version' => '1.0.0',
+                                'version' => '1.x.x',
                             ],
                             'logRecords' => [
                                 [
@@ -215,12 +246,16 @@ readonly class OtelStderrLogger implements LoggerInterface
 
     protected function severity(string $level): int
     {
-        $severity = static::LEVELS[$level] ?? null;
-
-        if ($severity === null) {
-            throw new InvalidArgumentException('$level');
-        }
-
-        return $severity;
+        return match ($level) {
+            'EMERGENCY' => 21,
+            'ALERT' => 20,
+            'CRITICAL' => 19,
+            'ERROR' => 17,
+            'WARNING' => 13,
+            'NOTICE' => 12,
+            'INFO' => 9,
+            'DEBUG' => 5,
+            default => throw new InvalidArgumentException('$level'),
+        };
     }
 }
