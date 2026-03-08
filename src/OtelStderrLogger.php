@@ -120,6 +120,7 @@ readonly class OtelStderrLogger implements LoggerInterface
         $level = $this->level($level);
         $severity = $this->severity($level);
         $nano = $this->nano();
+        $interlopated = $this->interpolate((string) $message, $context);
 
         $this->send($this->encode([
             'resourceLogs' => [
@@ -127,7 +128,7 @@ readonly class OtelStderrLogger implements LoggerInterface
                     'scopeLogs' => [
                         [
                             'scope' => [
-                                'name' => 'tomaschochola/php-psr-3-logger-interface',
+                                'name' => 'tomaschochola/php-psr-3-logger',
                                 'version' => '1.x.x',
                             ],
                             'logRecords' => [
@@ -135,7 +136,7 @@ readonly class OtelStderrLogger implements LoggerInterface
                                     'timeUnixNano' => $nano,
                                     'severityNumber' => $severity,
                                     'severityText' => $level,
-                                    'body' => $this->anyValue($message),
+                                    'body' => $this->anyValue($interlopated),
                                     'attributes' => $this->attributes($context),
                                 ],
                             ],
@@ -257,5 +258,21 @@ readonly class OtelStderrLogger implements LoggerInterface
             'DEBUG' => 5,
             default => throw new InvalidArgumentException('$level'),
         };
+    }
+
+    /**
+     * @param array<mixed, mixed> $context
+     */
+    protected function interpolate(string $message, array $context): string
+    {
+        $replace = [];
+
+        foreach ($context as $key => $val) {
+            if (is_scalar($val) || $val === null || $val instanceof Stringable) {
+                $replace['{' . $key . '}'] = (string) $val;
+            }
+        }
+
+        return strtr($message, $replace);
     }
 }
