@@ -13,23 +13,18 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace TomasChochola\Psr\Log;
 
-use PHPUnit\Framework\Attributes\CoversNothing;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\Attributes\Test;
+use NoDiscard;
 
 /**
- * @internal
- *
  * @no-named-arguments
  */
-#[CoversNothing]
-#[Small]
-class StubTest extends TestCase
+interface RecorderInterface
 {
-    #[DoesNotPerformAssertions]
-    #[Test]
-    public function test(): void {}
+    /**
+     * @param array<mixed, mixed> $context
+     */
+    #[NoDiscard]
+    public function record(string $level, string $message, array $context): RecordInterface;
 }

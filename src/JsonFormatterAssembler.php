@@ -13,23 +13,19 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace TomasChochola\Psr\Log;
 
-use PHPUnit\Framework\Attributes\CoversNothing;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\Attributes\Test;
+use NoDiscard;
+use Psr\Container\ContainerInterface;
 
 /**
- * @internal
- *
  * @no-named-arguments
  */
-#[CoversNothing]
-#[Small]
-class StubTest extends TestCase
+readonly class JsonFormatterAssembler
 {
-    #[DoesNotPerformAssertions]
-    #[Test]
-    public function test(): void {}
+    #[NoDiscard]
+    public static function assemble(ContainerInterface $container): JsonFormatter
+    {
+        return new JsonFormatter();
+    }
 }

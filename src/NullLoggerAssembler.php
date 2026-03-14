@@ -13,23 +13,20 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace TomasChochola\Psr\Log;
 
-use PHPUnit\Framework\Attributes\CoversNothing;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\Attributes\Test;
+use NoDiscard;
+use Psr\Container\ContainerInterface;
+use Psr\Log\NullLogger;
 
 /**
- * @internal
- *
  * @no-named-arguments
  */
-#[CoversNothing]
-#[Small]
-class StubTest extends TestCase
+readonly class NullLoggerAssembler
 {
-    #[DoesNotPerformAssertions]
-    #[Test]
-    public function test(): void {}
+    #[NoDiscard]
+    public static function assemble(ContainerInterface $container): NullLogger
+    {
+        return new NullLogger();
+    }
 }

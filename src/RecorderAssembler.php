@@ -15,18 +15,24 @@ declare(strict_types=1);
 
 namespace TomasChochola\Psr\Log;
 
-use Psr\Http\Message\UriInterface;
+use NoDiscard;
+use Psr\Clock\ClockInterface;
+use Psr\Container\ContainerInterface;
+
+use function assert;
 
 /**
  * @no-named-arguments
  */
-interface OtelOtlpLoggerSettingsInterface
+readonly class RecorderAssembler
 {
-    public string $method {
-        get;
-    }
+    #[NoDiscard]
+    public static function assemble(ContainerInterface $container): Recorder
+    {
+        $clock = $container->get(ClockInterface::class);
 
-    public UriInterface|string $uri {
-        get;
+        assert($clock instanceof ClockInterface);
+
+        return new Recorder($clock);
     }
 }

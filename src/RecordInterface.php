@@ -13,23 +13,23 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace TomasChochola\Psr\Log;
 
-use PHPUnit\Framework\Attributes\CoversNothing;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\Attributes\Test;
+use DateTimeImmutable;
 
 /**
- * @internal
- *
  * @no-named-arguments
  */
-#[CoversNothing]
-#[Small]
-class StubTest extends TestCase
+interface RecordInterface
 {
-    #[DoesNotPerformAssertions]
-    #[Test]
-    public function test(): void {}
+    /**
+     * @var array<mixed, mixed>
+     */
+    public array $context { get; }
+
+    public string $level { get; }
+
+    public string $message { get; }
+
+    public DateTimeImmutable $timestamp { get; }
 }
