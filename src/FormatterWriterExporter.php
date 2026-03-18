@@ -15,13 +15,29 @@ declare(strict_types=1);
 
 namespace TomasChochola\Psr\Log;
 
+use NoDiscard;
 use Override;
+use Psr\Container\ContainerInterface;
+
+use function assert;
 
 /**
  * @no-named-arguments
  */
 readonly class FormatterWriterExporter implements ExporterInterface
 {
+    #[NoDiscard]
+    public static function inject(ContainerInterface $container): self
+    {
+        $formatter = $container->get(FormatterInterface::class);
+        $writer = $container->get(WriterInterface::class);
+
+        assert($formatter instanceof FormatterInterface);
+        assert($writer instanceof WriterInterface);
+
+        return new self($formatter, $writer);
+    }
+
     private readonly FormatterInterface $formatter;
 
     private readonly WriterInterface $writer;

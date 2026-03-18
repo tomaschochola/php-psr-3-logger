@@ -15,24 +15,35 @@ declare(strict_types=1);
 
 namespace TomasChochola\Psr\Log;
 
+use ArrayIterator;
 use NoDiscard;
-use Psr\Clock\ClockInterface;
+use Override;
 use Psr\Container\ContainerInterface;
-
-use function assert;
 
 /**
  * @no-named-arguments
  */
-readonly class RecorderAssembler
+readonly class TestingExporter implements ExporterInterface
 {
     #[NoDiscard]
-    public static function assemble(ContainerInterface $container): Recorder
+    public static function inject(ContainerInterface $container): self
     {
-        $clock = $container->get(ClockInterface::class);
+        return new self();
+    }
 
-        assert($clock instanceof ClockInterface);
+    /**
+     * @var ArrayIterator<int, RecordInterface>
+     */
+    public readonly ArrayIterator $collection;
 
-        return new Recorder($clock);
+    public function __construct()
+    {
+        $this->collection = new ArrayIterator();
+    }
+
+    #[Override]
+    public function export(RecordInterface $record): void
+    {
+        $this->collection->append($record);
     }
 }

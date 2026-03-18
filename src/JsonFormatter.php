@@ -17,6 +17,7 @@ namespace TomasChochola\Psr\Log;
 
 use NoDiscard;
 use Override;
+use Psr\Container\ContainerInterface;
 
 use function assert;
 use function is_string;
@@ -34,15 +35,47 @@ use const JSON_UNESCAPED_UNICODE;
 readonly class JsonFormatter implements FormatterInterface
 {
     #[NoDiscard]
+    public static function inject(ContainerInterface $container): self
+    {
+        return new self();
+    }
+
+    #[NoDiscard]
     #[Override]
     public function format(RecordInterface $record): string
     {
-        $encoded = json_encode((object) array_replace((array) $record, [
-            'timestamp' => $record->timestamp->format('Uu') . '000',
+        $timestamp = $record->timestamp->format('Uu') . '000';
+
+        $encoded = json_encode(array_replace((array) $record, [
+            'timestamp' => $timestamp,
+        ]), JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        if (is_string($encoded)) {
+            return $encoded;
+        }
+
+        $encoded = json_encode([
+            'context' => $record->context,
+            'level' => $record->level,
+            'message' => $record->message,
+            'timestamp' => $timestamp,
+        ], JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        if (is_string($encoded)) {
+            return $encoded;
+        }
+
+        $encoded = json_encode(array_replace((array) $record, [
+            'context' => $record->context,
+            'level' => $record->level,
+            'message' => $record->message,
+            'timestamp' => $timestamp,
         ]), JSON_PARTIAL_OUTPUT_ON_ERROR | JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
-        assert(is_string($encoded));
+        if (is_string($encoded) && $encoded !== '' && $encoded !== '{}') {
+            return $encoded;
+        }
 
-        return $encoded;
+        return "{\"level\":\"{$record->level}\",\"message\":\"{$record->message}\",\"timestamp\":\"{$timestamp}\"}";
     }
 }

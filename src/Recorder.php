@@ -18,12 +18,25 @@ namespace TomasChochola\Psr\Log;
 use NoDiscard;
 use Override;
 use Psr\Clock\ClockInterface;
+use Psr\Container\ContainerInterface;
+
+use function assert;
 
 /**
  * @no-named-arguments
  */
 readonly class Recorder implements RecorderInterface
 {
+    #[NoDiscard]
+    public static function inject(ContainerInterface $container): self
+    {
+        $clock = $container->get(ClockInterface::class);
+
+        assert($clock instanceof ClockInterface);
+
+        return new self($clock);
+    }
+
     private readonly ClockInterface $clock;
 
     public function __construct(ClockInterface $clock)

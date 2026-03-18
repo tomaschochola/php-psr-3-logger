@@ -17,11 +17,14 @@ namespace TomasChochola\Psr\Log;
 
 use NoDiscard;
 use Override;
+use Psr\Container\ContainerInterface;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LogLevel;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 use Stringable;
+
+use function assert;
 
 use function is_scalar;
 use function strtr;
@@ -31,6 +34,18 @@ use function strtr;
  */
 readonly class Logger implements LoggerInterface
 {
+    #[NoDiscard]
+    public static function inject(ContainerInterface $container): self
+    {
+        $recorder = $container->get(RecorderInterface::class);
+        $exporter = $container->get(ExporterInterface::class);
+
+        assert($recorder instanceof RecorderInterface);
+        assert($exporter instanceof ExporterInterface);
+
+        return new self($recorder, $exporter);
+    }
+
     use LoggerTrait;
 
     private readonly ExporterInterface $exporter;
