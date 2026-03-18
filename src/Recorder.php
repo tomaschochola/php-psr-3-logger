@@ -27,6 +27,13 @@ use function assert;
  */
 readonly class Recorder implements RecorderInterface
 {
+    private readonly ClockInterface $clock;
+
+    public function __construct(ClockInterface $clock)
+    {
+        $this->clock = $clock;
+    }
+
     #[NoDiscard]
     public static function inject(ContainerInterface $container): self
     {
@@ -35,13 +42,6 @@ readonly class Recorder implements RecorderInterface
         assert($clock instanceof ClockInterface);
 
         return new self($clock);
-    }
-
-    private readonly ClockInterface $clock;
-
-    public function __construct(ClockInterface $clock)
-    {
-        $this->clock = $clock;
     }
 
     #[NoDiscard]

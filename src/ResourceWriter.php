@@ -18,8 +18,8 @@ namespace TomasChochola\Psr\Log;
 use InvalidArgumentException;
 use NoDiscard;
 use Override;
-use UnexpectedValueException;
 use Psr\Container\ContainerInterface;
+use UnexpectedValueException;
 
 use function fwrite;
 use function is_resource;
@@ -33,12 +33,6 @@ use const STDERR;
  */
 readonly class ResourceWriter implements WriterInterface
 {
-    #[NoDiscard]
-    public static function inject(ContainerInterface $container): self
-    {
-        return new self();
-    }
-
     /**
      * @var resource
      */
@@ -54,6 +48,12 @@ readonly class ResourceWriter implements WriterInterface
         }
 
         $this->resource = $resource;
+    }
+
+    #[NoDiscard]
+    public static function inject(ContainerInterface $container): self
+    {
+        return new self();
     }
 
     #[Override]

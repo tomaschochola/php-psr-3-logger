@@ -25,12 +25,6 @@ use Psr\Container\ContainerInterface;
  */
 readonly class TestingExporter implements ExporterInterface
 {
-    #[NoDiscard]
-    public static function inject(ContainerInterface $container): self
-    {
-        return new self();
-    }
-
     /**
      * @var ArrayIterator<int, RecordInterface>
      */
@@ -39,6 +33,12 @@ readonly class TestingExporter implements ExporterInterface
     public function __construct()
     {
         $this->collection = new ArrayIterator();
+    }
+
+    #[NoDiscard]
+    public static function inject(ContainerInterface $container): self
+    {
+        return new self();
     }
 
     #[Override]

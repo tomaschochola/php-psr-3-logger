@@ -19,7 +19,7 @@ use NoDiscard;
 use Override;
 use Psr\Container\ContainerInterface;
 
-use function assert;
+use function array_replace;
 use function is_string;
 use function json_encode;
 
@@ -72,7 +72,7 @@ readonly class JsonFormatter implements FormatterInterface
             'timestamp' => $timestamp,
         ]), JSON_PARTIAL_OUTPUT_ON_ERROR | JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
-        if (is_string($encoded) && $encoded !== '' && $encoded !== '{}') {
+        if (is_string($encoded)) {
             return $encoded;
         }
 

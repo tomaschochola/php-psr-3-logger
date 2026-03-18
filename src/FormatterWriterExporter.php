@@ -26,6 +26,16 @@ use function assert;
  */
 readonly class FormatterWriterExporter implements ExporterInterface
 {
+    private readonly FormatterInterface $formatter;
+
+    private readonly WriterInterface $writer;
+
+    public function __construct(FormatterInterface $formatter, WriterInterface $writer)
+    {
+        $this->formatter = $formatter;
+        $this->writer = $writer;
+    }
+
     #[NoDiscard]
     public static function inject(ContainerInterface $container): self
     {
@@ -36,16 +46,6 @@ readonly class FormatterWriterExporter implements ExporterInterface
         assert($writer instanceof WriterInterface);
 
         return new self($formatter, $writer);
-    }
-
-    private readonly FormatterInterface $formatter;
-
-    private readonly WriterInterface $writer;
-
-    public function __construct(FormatterInterface $formatter, WriterInterface $writer)
-    {
-        $this->formatter = $formatter;
-        $this->writer = $writer;
     }
 
     #[Override]
