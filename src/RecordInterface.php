@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace TomasChochola\Psr\Log;
 
 use DateTimeImmutable;
+use NoDiscard;
 
 /**
  * @no-named-arguments
@@ -27,9 +28,27 @@ interface RecordInterface
      */
     public array $context { get; }
 
+    public int $code { get; }
+
     public string $level { get; }
 
     public string $message { get; }
 
+    /**
+     * @var array<mixed, mixed>
+     */
+    public array $structured { get; }
+
+    public string $template { get; }
+
     public DateTimeImmutable $timestamp { get; }
+
+    #[NoDiscard]
+    public function withMessage(string $message): static;
+
+    /**
+     * @param array<mixed, mixed> $structured
+     */
+    #[NoDiscard]
+    public function withStructured(array $structured): static;
 }

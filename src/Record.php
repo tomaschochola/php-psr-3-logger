@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace TomasChochola\Psr\Log;
 
 use DateTimeImmutable;
+use NoDiscard;
 use Override;
 
 /**
@@ -27,22 +28,52 @@ readonly class Record implements RecordInterface
     public readonly array $context;
 
     #[Override]
+    public readonly int $code;
+
+    #[Override]
     public readonly string $level;
 
     #[Override]
     public readonly string $message;
 
     #[Override]
+    public readonly array $structured;
+
+    #[Override]
+    public readonly string $template;
+
+    #[Override]
     public readonly DateTimeImmutable $timestamp;
 
     /**
      * @param array<mixed, mixed> $context
+     * @param array<mixed, mixed> $structured
      */
-    public function __construct(array $context, string $level, string $message, DateTimeImmutable $timestamp)
+    public function __construct(array $context, int $code, string $level, string $template, DateTimeImmutable $timestamp, string $message = '', array $structured = [])
     {
         $this->context = $context;
+        $this->code = $code;
         $this->level = $level;
-        $this->message = $message;
+        $this->template = $template;
         $this->timestamp = $timestamp;
+        $this->message = $message;
+        $this->structured = $structured;
+    }
+
+    #[NoDiscard]
+    #[Override]
+    public function withMessage(string $message): static
+    {
+        return clone ($this, ['message' => $message]);
+    }
+
+    /**
+     * @param array<mixed, mixed> $structured
+     */
+    #[NoDiscard]
+    #[Override]
+    public function withStructured(array $structured): static
+    {
+        return clone ($this, ['structured' => $structured]);
     }
 }

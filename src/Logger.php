@@ -25,8 +25,6 @@ use Psr\Log\LoggerTrait;
 use Stringable;
 
 use function assert;
-use function is_scalar;
-use function strtr;
 
 /**
  * @no-named-arguments
@@ -48,11 +46,11 @@ readonly class Logger implements LoggerInterface
     #[NoDiscard]
     public static function inject(ContainerInterface $container): self
     {
-        $recorder = $container->get(RecorderInterface::class);
         $exporter = $container->get(ExporterInterface::class);
+        $recorder = $container->get(RecorderInterface::class);
 
-        assert($recorder instanceof RecorderInterface);
         assert($exporter instanceof ExporterInterface);
+        assert($recorder instanceof RecorderInterface);
 
         return new self($recorder, $exporter);
     }
@@ -60,38 +58,20 @@ readonly class Logger implements LoggerInterface
     #[Override]
     public function log(mixed $level, Stringable|string $message, array $context = []): void
     {
-        $level = match ($level) {
-            LogLevel::EMERGENCY => LogLevel::EMERGENCY,
-            LogLevel::ALERT => LogLevel::ALERT,
-            LogLevel::CRITICAL => LogLevel::CRITICAL,
-            LogLevel::ERROR => LogLevel::ERROR,
-            LogLevel::WARNING => LogLevel::WARNING,
-            LogLevel::NOTICE => LogLevel::NOTICE,
-            LogLevel::INFO => LogLevel::INFO,
-            LogLevel::DEBUG => LogLevel::DEBUG,
+        [$code, $level] = match ($level) {
+            LogLevel::EMERGENCY => [0, LogLevel::EMERGENCY],
+            LogLevel::ALERT => [1, LogLevel::ALERT],
+            LogLevel::CRITICAL => [2, LogLevel::CRITICAL],
+            LogLevel::ERROR => [3, LogLevel::ERROR],
+            LogLevel::WARNING => [4, LogLevel::WARNING],
+            LogLevel::NOTICE => [5, LogLevel::NOTICE],
+            LogLevel::INFO => [6, LogLevel::INFO],
+            LogLevel::DEBUG => [7, LogLevel::DEBUG],
             default => throw new InvalidArgumentException('$level'),
         };
 
-        $message = self::interpolate((string) $message, $context);
-        $record = $this->recorder->record($level, $message, $context);
+        $record = $this->recorder->record((string) $message, $level, $code, $context);
 
         $this->exporter->export($record);
-    }
-
-    /**
-     * @param array<mixed, mixed> $context
-     */
-    #[NoDiscard]
-    private static function interpolate(string $message, array $context): string
-    {
-        $replace = [];
-
-        foreach ($context as $key => $val) {
-            if (is_scalar($val) || $val === null || $val instanceof Stringable) {
-                $replace['{' . $key . '}'] = (string) $val;
-            }
-        }
-
-        return strtr($message, $replace);
     }
 }

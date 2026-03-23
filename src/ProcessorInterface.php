@@ -20,11 +20,8 @@ use NoDiscard;
 /**
  * @no-named-arguments
  */
-interface RecorderInterface
+interface ProcessorInterface
 {
-    /**
-     * @param array<mixed, mixed> $context
-     */
     #[NoDiscard]
-    public function record(string $template, string $level, int $code, array $context): RecordInterface;
+    public function process(RecordInterface $record): RecordInterface;
 }

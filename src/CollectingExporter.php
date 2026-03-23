@@ -23,7 +23,7 @@ use Psr\Container\ContainerInterface;
 /**
  * @no-named-arguments
  */
-readonly class TestingExporter implements ExporterInterface
+readonly class CollectingExporter implements ExporterInterface
 {
     /**
      * @var ArrayIterator<int, RecordInterface>

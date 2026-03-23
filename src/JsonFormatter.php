@@ -46,36 +46,19 @@ readonly class JsonFormatter implements FormatterInterface
     {
         $timestamp = $record->timestamp->format('Uu') . '000';
 
-        $encoded = json_encode(array_replace((array) $record, [
-            'timestamp' => $timestamp,
-        ]), JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-
-        if (is_string($encoded)) {
-            return $encoded;
-        }
-
         $encoded = json_encode([
-            'context' => $record->context,
+            'code' => $record->code,
             'level' => $record->level,
             'message' => $record->message,
+            'structured' => $record->structured,
+            'template' => $record->template,
             'timestamp' => $timestamp,
-        ], JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        ], JSON_PARTIAL_OUTPUT_ON_ERROR | JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
         if (is_string($encoded)) {
             return $encoded;
         }
 
-        $encoded = json_encode(array_replace((array) $record, [
-            'context' => $record->context,
-            'level' => $record->level,
-            'message' => $record->message,
-            'timestamp' => $timestamp,
-        ]), JSON_PARTIAL_OUTPUT_ON_ERROR | JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-
-        if (is_string($encoded)) {
-            return $encoded;
-        }
-
-        return "{\"level\":\"{$record->level}\",\"message\":\"{$record->message}\",\"timestamp\":\"{$timestamp}\"}";
+        return "{\"code\":{$record->code},\"level\":\"{$record->level}\",\"message\":\"{$record->message}\",\"template\":\"{$record->template}\",\"timestamp\":\"{$timestamp}\"}";
     }
 }
