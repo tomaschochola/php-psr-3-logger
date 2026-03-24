@@ -29,38 +29,25 @@ readonly class Recorder implements RecorderInterface
 {
     private readonly ClockInterface $clock;
 
-    private readonly ContextorInterface $contextor;
-
-    private readonly InterpolatorInterface $interpolator;
-
-    public function __construct(ClockInterface $clock, ContextorInterface $contextor, InterpolatorInterface $interpolator)
+    public function __construct(ClockInterface $clock)
     {
         $this->clock = $clock;
-        $this->contextor = $contextor;
-        $this->interpolator = $interpolator;
     }
 
     #[NoDiscard]
     public static function inject(ContainerInterface $container): self
     {
         $clock = $container->get(ClockInterface::class);
-        $contextor = $container->get(ContextorInterface::class);
-        $interpolator = $container->get(InterpolatorInterface::class);
 
         assert($clock instanceof ClockInterface);
-        assert($contextor instanceof ContextorInterface);
-        assert($interpolator instanceof InterpolatorInterface);
 
-        return new self($clock, $contextor, $interpolator);
+        return new self($clock);
     }
 
     #[NoDiscard]
     #[Override]
-    public function record(string $template, string $level, int $code, array $context): RecordInterface
+    public function record(string $level, string $template, array $context): RecordInterface
     {
-        $record = new Record($context, $code, $level, $template, $this->clock->now());
-        $record = $this->contextor->process($record);
-
-        return $this->interpolator->process($record);
+        return new Record($level, $template, $context, $this->clock->now());
     }
 }

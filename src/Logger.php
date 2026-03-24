@@ -58,19 +58,19 @@ readonly class Logger implements LoggerInterface
     #[Override]
     public function log(mixed $level, Stringable|string $message, array $context = []): void
     {
-        [$code, $level] = match ($level) {
-            LogLevel::EMERGENCY => [0, LogLevel::EMERGENCY],
-            LogLevel::ALERT => [1, LogLevel::ALERT],
-            LogLevel::CRITICAL => [2, LogLevel::CRITICAL],
-            LogLevel::ERROR => [3, LogLevel::ERROR],
-            LogLevel::WARNING => [4, LogLevel::WARNING],
-            LogLevel::NOTICE => [5, LogLevel::NOTICE],
-            LogLevel::INFO => [6, LogLevel::INFO],
-            LogLevel::DEBUG => [7, LogLevel::DEBUG],
+        $level = match ($level) {
+            LogLevel::EMERGENCY => LogLevel::EMERGENCY,
+            LogLevel::ALERT => LogLevel::ALERT,
+            LogLevel::CRITICAL => LogLevel::CRITICAL,
+            LogLevel::ERROR => LogLevel::ERROR,
+            LogLevel::WARNING => LogLevel::WARNING,
+            LogLevel::NOTICE => LogLevel::NOTICE,
+            LogLevel::INFO => LogLevel::INFO,
+            LogLevel::DEBUG => LogLevel::DEBUG,
             default => throw new InvalidArgumentException('$level'),
         };
 
-        $record = $this->recorder->record((string) $message, $level, $code, $context);
+        $record = $this->recorder->record($level, (string) $message, $context);
 
         $this->exporter->export($record);
     }

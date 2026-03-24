@@ -36,7 +36,7 @@ readonly class Interpolator implements InterpolatorInterface
 
     #[NoDiscard]
     #[Override]
-    public function process(RecordInterface $record): RecordInterface
+    public function interpolate(RecordInterface $record): string
     {
         $replace = [];
 
@@ -46,6 +46,6 @@ readonly class Interpolator implements InterpolatorInterface
             }
         }
 
-        return $record->withMessage(strtr($record->template, $replace));
+        return strtr($record->template, $replace);
     }
 }

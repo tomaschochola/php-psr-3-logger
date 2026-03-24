@@ -19,7 +19,7 @@ use NoDiscard;
 use Override;
 use Psr\Container\ContainerInterface;
 
-use function array_replace;
+use function assert;
 use function is_string;
 use function json_encode;
 
@@ -34,23 +34,34 @@ use const JSON_UNESCAPED_UNICODE;
  */
 readonly class JsonFormatter implements FormatterInterface
 {
+    private readonly InterpolatorInterface $interpolator;
+
+    public function __construct(InterpolatorInterface $interpolator)
+    {
+        $this->interpolator = $interpolator;
+    }
+
     #[NoDiscard]
     public static function inject(ContainerInterface $container): self
     {
-        return new self();
+        $interpolator = $container->get(InterpolatorInterface::class);
+
+        assert($interpolator instanceof InterpolatorInterface);
+
+        return new self($interpolator);
     }
 
     #[NoDiscard]
     #[Override]
     public function format(RecordInterface $record): string
     {
+        $message = $this->interpolator->interpolate($record);
         $timestamp = $record->timestamp->format('Uu') . '000';
 
         $encoded = json_encode([
-            'code' => $record->code,
             'level' => $record->level,
-            'message' => $record->message,
-            'structured' => $record->structured,
+            'message' => $message,
+            'context' => $record->context,
             'template' => $record->template,
             'timestamp' => $timestamp,
         ], JSON_PARTIAL_OUTPUT_ON_ERROR | JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
@@ -59,6 +70,6 @@ readonly class JsonFormatter implements FormatterInterface
             return $encoded;
         }
 
-        return "{\"code\":{$record->code},\"level\":\"{$record->level}\",\"message\":\"{$record->message}\",\"template\":\"{$record->template}\",\"timestamp\":\"{$timestamp}\"}";
+        return "{\"level\":\"{$record->level}\",\"message\":\"{$message}\",\"template\":\"{$record->template}\",\"timestamp\":\"{$timestamp}\"}";
     }
 }

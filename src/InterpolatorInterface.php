@@ -20,8 +20,8 @@ use NoDiscard;
 /**
  * @no-named-arguments
  */
-interface InterpolatorInterface extends ProcessorInterface
+interface InterpolatorInterface
 {
     #[NoDiscard]
-    public function process(RecordInterface $record): RecordInterface;
+    public function interpolate(RecordInterface $record): string;
 }
