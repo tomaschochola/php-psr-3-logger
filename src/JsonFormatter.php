@@ -17,7 +17,6 @@ namespace TomasChochola\Psr\Log;
 
 use NoDiscard;
 use Override;
-use Psr\Container\ContainerInterface;
 
 use function assert;
 use function is_string;
@@ -39,16 +38,6 @@ readonly class JsonFormatter implements FormatterInterface
     public function __construct(InterpolatorInterface $interpolator)
     {
         $this->interpolator = $interpolator;
-    }
-
-    #[NoDiscard]
-    public static function inject(ContainerInterface $container): self
-    {
-        $interpolator = $container->get(InterpolatorInterface::class);
-
-        assert($interpolator instanceof InterpolatorInterface);
-
-        return new self($interpolator);
     }
 
     #[NoDiscard]

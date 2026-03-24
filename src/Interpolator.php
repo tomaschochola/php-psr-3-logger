@@ -17,7 +17,6 @@ namespace TomasChochola\Psr\Log;
 
 use NoDiscard;
 use Override;
-use Psr\Container\ContainerInterface;
 use Stringable;
 
 use function is_scalar;
@@ -28,12 +27,6 @@ use function strtr;
  */
 readonly class Interpolator implements InterpolatorInterface
 {
-    #[NoDiscard]
-    public static function inject(ContainerInterface $container): self
-    {
-        return new self();
-    }
-
     #[NoDiscard]
     #[Override]
     public function interpolate(RecordInterface $record): string

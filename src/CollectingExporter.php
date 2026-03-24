@@ -18,7 +18,6 @@ namespace TomasChochola\Psr\Log;
 use ArrayIterator;
 use NoDiscard;
 use Override;
-use Psr\Container\ContainerInterface;
 
 /**
  * @no-named-arguments
@@ -33,12 +32,6 @@ readonly class CollectingExporter implements ExporterInterface
     public function __construct()
     {
         $this->collection = new ArrayIterator();
-    }
-
-    #[NoDiscard]
-    public static function inject(ContainerInterface $container): self
-    {
-        return new self();
     }
 
     #[Override]

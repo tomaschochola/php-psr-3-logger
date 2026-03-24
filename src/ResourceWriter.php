@@ -17,7 +17,6 @@ namespace TomasChochola\Psr\Log;
 
 use NoDiscard;
 use Override;
-use Psr\Container\ContainerInterface;
 use UnexpectedValueException;
 
 use function fwrite;
@@ -42,12 +41,6 @@ readonly class ResourceWriter implements WriterInterface
     public function __construct(mixed $resource = STDERR)
     {
         $this->resource = $resource;
-    }
-
-    #[NoDiscard]
-    public static function inject(ContainerInterface $container): self
-    {
-        return new self();
     }
 
     #[Override]

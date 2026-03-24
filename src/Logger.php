@@ -17,7 +17,6 @@ namespace TomasChochola\Psr\Log;
 
 use NoDiscard;
 use Override;
-use Psr\Container\ContainerInterface;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LogLevel;
 use Psr\Log\LoggerInterface;
@@ -41,18 +40,6 @@ readonly class Logger implements LoggerInterface
     {
         $this->recorder = $recorder;
         $this->exporter = $exporter;
-    }
-
-    #[NoDiscard]
-    public static function inject(ContainerInterface $container): self
-    {
-        $exporter = $container->get(ExporterInterface::class);
-        $recorder = $container->get(RecorderInterface::class);
-
-        assert($exporter instanceof ExporterInterface);
-        assert($recorder instanceof RecorderInterface);
-
-        return new self($recorder, $exporter);
     }
 
     #[Override]
