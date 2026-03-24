@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace TomasChochola\Psr\Log;
 
 use ArrayIterator;
-use NoDiscard;
 use Override;
 
 /**

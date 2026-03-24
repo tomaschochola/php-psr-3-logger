@@ -15,15 +15,12 @@ declare(strict_types=1);
 
 namespace TomasChochola\Psr\Log;
 
-use NoDiscard;
 use Override;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LogLevel;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 use Stringable;
-
-use function assert;
 
 /**
  * @no-named-arguments

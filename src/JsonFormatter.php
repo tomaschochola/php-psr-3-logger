@@ -18,7 +18,6 @@ namespace TomasChochola\Psr\Log;
 use NoDiscard;
 use Override;
 
-use function assert;
 use function is_string;
 use function json_encode;
 

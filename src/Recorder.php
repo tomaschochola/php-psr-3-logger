@@ -19,8 +19,6 @@ use NoDiscard;
 use Override;
 use Psr\Clock\ClockInterface;
 
-use function assert;
-
 /**
  * @no-named-arguments
  */

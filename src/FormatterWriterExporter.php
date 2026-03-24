@@ -15,10 +15,7 @@ declare(strict_types=1);
 
 namespace TomasChochola\Psr\Log;
 
-use NoDiscard;
 use Override;
-
-use function assert;
 
 /**
  * @no-named-arguments
