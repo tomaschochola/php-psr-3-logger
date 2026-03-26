@@ -22,7 +22,6 @@ use function fwrite;
 use function mb_strlen;
 
 use const PHP_EOL;
-use const STDERR;
 
 /**
  * @no-named-arguments
@@ -37,7 +36,7 @@ readonly class ResourceWriter implements WriterInterface
     /**
      * @param resource $resource
      */
-    public function __construct(mixed $resource = STDERR)
+    public function __construct(mixed $resource)
     {
         $this->resource = $resource;
     }
