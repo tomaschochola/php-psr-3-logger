@@ -15,10 +15,12 @@ declare(strict_types=1);
 
 namespace TomasChochola\Psr\Log;
 
+use InvalidArgumentException;
 use Override;
 use UnexpectedValueException;
 
 use function fwrite;
+use function is_resource;
 use function mb_strlen;
 
 use const PHP_EOL;
@@ -39,7 +41,7 @@ readonly class ResourceWriter implements WriterInterface
     public function __construct(mixed $resource)
     {
         if (!is_resource($resource)) {
-            throw new \InvalidArgumentException('$resource');
+            throw new InvalidArgumentException('$resource');
         }
 
         $this->resource = $resource;
