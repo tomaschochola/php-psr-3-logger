@@ -15,12 +15,10 @@ declare(strict_types=1);
 
 namespace TomasChochola\Psr\Log;
 
-use InvalidArgumentException;
 use Override;
 use UnexpectedValueException;
 
 use function fwrite;
-use function is_resource;
 use function mb_strlen;
 
 use const PHP_EOL;
