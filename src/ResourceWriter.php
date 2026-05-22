@@ -31,7 +31,7 @@ readonly class ResourceWriter implements WriterInterface
     /**
      * @var resource
      */
-    private readonly mixed $resource;
+    private mixed $resource;
 
     /**
      * @param resource $resource
@@ -41,7 +41,7 @@ readonly class ResourceWriter implements WriterInterface
         $this->resource = $resource;
     }
 
-    #[Override]
+    #[Override()]
     public function write(string $payload): void
     {
         $payload .= PHP_EOL;

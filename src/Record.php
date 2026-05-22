@@ -23,17 +23,17 @@ use Override;
  */
 readonly class Record implements RecordInterface
 {
-    #[Override]
-    public readonly array $context;
+    #[Override()]
+    public array $context;
 
-    #[Override]
-    public readonly string $level;
+    #[Override()]
+    public string $level;
 
-    #[Override]
-    public readonly string $template;
+    #[Override()]
+    public string $template;
 
-    #[Override]
-    public readonly DateTimeImmutable $timestamp;
+    #[Override()]
+    public DateTimeImmutable $timestamp;
 
     /**
      * @param array<mixed, mixed> $context

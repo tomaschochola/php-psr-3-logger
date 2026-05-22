@@ -22,6 +22,6 @@ use NoDiscard;
  */
 interface FilterInterface
 {
-    #[NoDiscard]
+    #[NoDiscard()]
     public function allow(RecordInterface $record): bool;
 }

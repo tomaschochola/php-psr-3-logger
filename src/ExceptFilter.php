@@ -28,7 +28,7 @@ readonly class ExceptFilter implements FilterInterface
     /**
      * @var array<mixed, string>
      */
-    private readonly array $levels;
+    private array $levels;
 
     /**
      * @param array<mixed, string> $levels
@@ -38,8 +38,8 @@ readonly class ExceptFilter implements FilterInterface
         $this->levels = $levels;
     }
 
-    #[NoDiscard]
-    #[Override]
+    #[NoDiscard()]
+    #[Override()]
     public function allow(RecordInterface $record): bool
     {
         return !in_array($record->level, $this->levels, true);

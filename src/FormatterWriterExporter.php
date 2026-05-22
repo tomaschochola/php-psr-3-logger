@@ -22,9 +22,9 @@ use Override;
  */
 readonly class FormatterWriterExporter implements ExporterInterface
 {
-    private readonly FormatterInterface $formatter;
+    private FormatterInterface $formatter;
 
-    private readonly WriterInterface $writer;
+    private WriterInterface $writer;
 
     public function __construct(FormatterInterface $formatter, WriterInterface $writer)
     {
@@ -32,7 +32,7 @@ readonly class FormatterWriterExporter implements ExporterInterface
         $this->writer = $writer;
     }
 
-    #[Override]
+    #[Override()]
     public function export(RecordInterface $record): void
     {
         $this->writer->write($this->formatter->format($record));

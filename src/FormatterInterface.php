@@ -22,6 +22,6 @@ use NoDiscard;
  */
 interface FormatterInterface
 {
-    #[NoDiscard]
+    #[NoDiscard()]
     public function format(RecordInterface $record): string;
 }

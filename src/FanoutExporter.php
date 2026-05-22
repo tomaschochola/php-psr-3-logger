@@ -25,7 +25,7 @@ readonly class FanoutExporter implements ExporterInterface
     /**
      * @var iterable<mixed, ExporterInterface>
      */
-    private readonly iterable $exporters;
+    private iterable $exporters;
 
     /**
      * @param iterable<mixed, ExporterInterface> $exporters
@@ -35,7 +35,7 @@ readonly class FanoutExporter implements ExporterInterface
         $this->exporters = $exporters;
     }
 
-    #[Override]
+    #[Override()]
     public function export(RecordInterface $record): void
     {
         foreach ($this->exporters as $exporter) {

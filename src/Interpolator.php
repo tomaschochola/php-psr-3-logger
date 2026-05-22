@@ -27,8 +27,8 @@ use function strtr;
  */
 readonly class Interpolator implements InterpolatorInterface
 {
-    #[NoDiscard]
-    #[Override]
+    #[NoDiscard()]
+    #[Override()]
     public function interpolate(RecordInterface $record): string
     {
         $replace = [];

@@ -32,15 +32,15 @@ use const JSON_UNESCAPED_UNICODE;
  */
 readonly class JsonFormatter implements FormatterInterface
 {
-    private readonly InterpolatorInterface $interpolator;
+    private InterpolatorInterface $interpolator;
 
     public function __construct(InterpolatorInterface $interpolator)
     {
         $this->interpolator = $interpolator;
     }
 
-    #[NoDiscard]
-    #[Override]
+    #[NoDiscard()]
+    #[Override()]
     public function format(RecordInterface $record): string
     {
         $message = $this->interpolator->interpolate($record);

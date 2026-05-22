@@ -26,14 +26,14 @@ readonly class CollectingExporter implements ExporterInterface
     /**
      * @var ArrayIterator<int, RecordInterface>
      */
-    public readonly ArrayIterator $collection;
+    public ArrayIterator $collection;
 
     public function __construct()
     {
         $this->collection = new ArrayIterator();
     }
 
-    #[Override]
+    #[Override()]
     public function export(RecordInterface $record): void
     {
         $this->collection->append($record);

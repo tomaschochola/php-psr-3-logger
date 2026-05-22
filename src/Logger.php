@@ -29,9 +29,9 @@ readonly class Logger implements LoggerInterface
 {
     use LoggerTrait;
 
-    private readonly ExporterInterface $exporter;
+    private ExporterInterface $exporter;
 
-    private readonly RecorderInterface $recorder;
+    private RecorderInterface $recorder;
 
     public function __construct(RecorderInterface $recorder, ExporterInterface $exporter)
     {
@@ -39,8 +39,8 @@ readonly class Logger implements LoggerInterface
         $this->exporter = $exporter;
     }
 
-    #[Override]
-    public function log(mixed $level, Stringable|string $message, array $context = []): void
+    #[Override()]
+    public function log(mixed $level, Stringable | string $message, array $context = []): void
     {
         $level = match ($level) {
             LogLevel::EMERGENCY => LogLevel::EMERGENCY,

@@ -22,9 +22,9 @@ use Override;
  */
 readonly class FilterExporter implements ExporterInterface
 {
-    private readonly ExporterInterface $exporter;
+    private ExporterInterface $exporter;
 
-    private readonly FilterInterface $filter;
+    private FilterInterface $filter;
 
     public function __construct(FilterInterface $filter, ExporterInterface $exporter)
     {
@@ -32,7 +32,7 @@ readonly class FilterExporter implements ExporterInterface
         $this->exporter = $exporter;
     }
 
-    #[Override]
+    #[Override()]
     public function export(RecordInterface $record): void
     {
         if (!$this->filter->allow($record)) {

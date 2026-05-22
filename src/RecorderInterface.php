@@ -25,6 +25,6 @@ interface RecorderInterface
     /**
      * @param array<mixed, mixed> $context
      */
-    #[NoDiscard]
+    #[NoDiscard()]
     public function record(string $level, string $template, array $context): RecordInterface;
 }

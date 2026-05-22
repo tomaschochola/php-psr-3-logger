@@ -22,6 +22,6 @@ use NoDiscard;
  */
 interface InterpolatorInterface
 {
-    #[NoDiscard]
+    #[NoDiscard()]
     public function interpolate(RecordInterface $record): string;
 }

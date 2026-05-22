@@ -24,15 +24,15 @@ use Psr\Clock\ClockInterface;
  */
 readonly class Recorder implements RecorderInterface
 {
-    private readonly ClockInterface $clock;
+    private ClockInterface $clock;
 
     public function __construct(ClockInterface $clock)
     {
         $this->clock = $clock;
     }
 
-    #[NoDiscard]
-    #[Override]
+    #[NoDiscard()]
+    #[Override()]
     public function record(string $level, string $template, array $context): RecordInterface
     {
         return new Record($level, $template, $context, $this->clock->now());
