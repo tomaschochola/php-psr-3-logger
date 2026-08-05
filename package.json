@@ -31,7 +31,10 @@
     "TomasChochola",
     "Tomas Chochola",
     "Tomáš Chochola",
-    "php-psr-3-logger"
+    "logger",
+    "logging",
+    "psr-3",
+    "structured-logging"
   ],
   "license": "CC-BY-ND-4.0",
   "name": "@tomaschochola/php-psr-3-logger",
