@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "11c9b1930af142a54dbab57dfa345c80",
+    "content-hash": "5be05687e0abbece991cb725431fc0b3",
     "packages": [
         {
             "name": "psr/clock",
@@ -6679,7 +6679,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": {
         "roave/security-advisories": 20,
         "tomaschochola/tooling-php-cs-fixer": 20,
