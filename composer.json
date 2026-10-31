@@ -51,7 +51,7 @@
         "Tomáš Chochola",
         "php-psr-3-logger"
     ],
-    "license": "CC-BY-ND-4.0",
+    "license": "BSD-3-Clause",
     "name": "tomaschochola/php-psr-3-logger",
     "prefer-stable": true,
     "provide": {
